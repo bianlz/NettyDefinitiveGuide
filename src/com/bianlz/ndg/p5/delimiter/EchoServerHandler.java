@@ -29,6 +29,7 @@ public class EchoServerHandler extends ChannelHandlerAdapter {
 		// TODO Auto-generated method stub
 		System.err.println("server has occured exception !");
 		cause.printStackTrace();
+		ctx.close();
 	}
 
 }
