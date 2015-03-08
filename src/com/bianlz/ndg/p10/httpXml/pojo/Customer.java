@@ -1,4 +1,4 @@
-package com.bianlz.ndg.p10.httoXml.pojo;
+package com.bianlz.ndg.p10.httpXml.pojo;
 
 import java.util.List;
 

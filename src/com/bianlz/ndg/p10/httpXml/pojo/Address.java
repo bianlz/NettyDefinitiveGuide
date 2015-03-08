@@ -1,4 +1,4 @@
-package com.bianlz.ndg.p10.httoXml.pojo;
+package com.bianlz.ndg.p10.httpXml.pojo;
 
 public class Address {
 	private String street1;
