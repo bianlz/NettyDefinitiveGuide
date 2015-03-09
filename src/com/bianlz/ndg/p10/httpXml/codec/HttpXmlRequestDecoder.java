@@ -24,22 +24,20 @@ public class HttpXmlRequestDecoder extends
 		super(classz,isPrintLog);
 	}
 	@Override
-	protected void decode(ChannelHandlerContext ctx, FullHttpRequest fullReq,
-			List<Object> list) throws Exception {
+	protected void decode(ChannelHandlerContext arg0, FullHttpRequest arg1,
+			List<Object> arg2) throws Exception {
 		// TODO Auto-generated method stub
-		if(!fullReq.getDecoderResult().isSuccess()){
-			sendError(ctx, HttpResponseStatus.BAD_REQUEST);
+		if(!arg1.getDecoderResult().isSuccess()){
+			sendError(arg0, HttpResponseStatus.BAD_REQUEST);
 			return;
 		}
-		HttpXmlRequest req = new HttpXmlRequest(fullReq, decode0(ctx,fullReq.content()));
-		list.add(req);
+		HttpXmlRequest req = new HttpXmlRequest(arg1, decode0(arg0,arg1.content()));
+		arg2.add(req);
 	}
 	private static void sendError(ChannelHandlerContext ctx,HttpResponseStatus status){
 		FullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status,
 				Unpooled.copiedBuffer("Failure:"+status.toString(),CharsetUtil.UTF_8));
 		resp.headers().set(HttpHeaders.Names.CONTENT_TYPE,"text/plain;charset=UTF-8");
 		ctx.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
-		
 	}
-	
 }

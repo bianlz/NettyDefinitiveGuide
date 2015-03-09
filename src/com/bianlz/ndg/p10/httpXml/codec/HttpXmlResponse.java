@@ -9,17 +9,22 @@ public class HttpXmlResponse {
 		this.httpResponse = httpResponse;
 		this.result = result;
 	}
-	public FullHttpResponse getHttpResponse() {
+	public final FullHttpResponse getHttpResponse() {
 		return httpResponse;
 	}
-	public void setHttpResponse(FullHttpResponse httpResponse) {
+	public final void setHttpResponse(FullHttpResponse httpResponse) {
 		this.httpResponse = httpResponse;
 	}
-	public Object getResult() {
+	public final Object getResult() {
 		return result;
 	}
-	public void setResult(Object result) {
+	public final void setResult(Object result) {
 		this.result = result;
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "httpXmlResponse [httpResponse="+this.httpResponse+",result="+this.result+"]";
 	}
 	
 }

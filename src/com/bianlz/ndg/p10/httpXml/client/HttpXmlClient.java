@@ -1,5 +1,8 @@
 package com.bianlz.ndg.p10.httpXml.client;
 
+
+import java.net.InetSocketAddress;
+
 import com.bianlz.ndg.p10.httpXml.codec.HttpXmlRequestEncoder;
 import com.bianlz.ndg.p10.httpXml.codec.HttpXmlResponseDecoder;
 import com.bianlz.ndg.p10.httpXml.pojo.Order;
@@ -7,6 +10,7 @@ import com.bianlz.ndg.p10.httpXml.pojo.Order;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -16,25 +20,26 @@ import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 
 public class HttpXmlClient {
-	public void connect(String host,int port)throws Exception{
+	public void connect(int port)throws Exception{
 		EventLoopGroup group = new NioEventLoopGroup();
 		try{
 			Bootstrap client = new Bootstrap();
 			client.group(group).channel(NioSocketChannel.class)
-					.handler(new ChannelInitializer<SocketChannel>() {
-						@Override
-						protected void initChannel(SocketChannel arg0) throws Exception {
-							// TODO Auto-generated method stub
-							arg0.pipeline().addLast("http-decoder",new HttpResponseDecoder());
-							arg0.pipeline().addLast("http-aggregator",new HttpObjectAggregator(65536));
-							arg0.pipeline().addLast("xml-decoder",new HttpXmlResponseDecoder(Order.class, true));
-							arg0.pipeline().addLast("http-encoder",new HttpRequestEncoder());
-							arg0.pipeline().addLast("xml-decoder",new HttpXmlRequestEncoder());
-							arg0.pipeline().addLast("xmlClientHandler",new HttpXmlClientHandler());
-						}
-					});
-			ChannelFuture future = client.connect(host, port).sync();
-			future.channel().close().sync();
+					.option(ChannelOption.TCP_NODELAY, true)
+						.handler(new ChannelInitializer<SocketChannel>() {
+							@Override
+							protected void initChannel(SocketChannel arg0) throws Exception {
+								// TODO Auto-generated method stub
+								arg0.pipeline().addLast("http-decoder",new HttpResponseDecoder());
+								arg0.pipeline().addLast("http-aggregator",new HttpObjectAggregator(65536));
+								arg0.pipeline().addLast("xml-decoder",new HttpXmlResponseDecoder(Order.class, true));
+								arg0.pipeline().addLast("http-encoder",new HttpRequestEncoder());
+								arg0.pipeline().addLast("xml-encoder",new HttpXmlRequestEncoder());
+								arg0.pipeline().addLast("xmlClientHandler",new HttpXmlClientHandler());
+							}
+						});
+			ChannelFuture future = client.connect(new InetSocketAddress(port)).sync();
+			future.channel().closeFuture().sync();
 		}finally{
 			group.shutdownGracefully();
 		}
@@ -50,7 +55,7 @@ public class HttpXmlClient {
 			}
 		}
 		try {
-			new HttpXmlClient().connect("127.0.0.1", port);
+			new HttpXmlClient().connect(port);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

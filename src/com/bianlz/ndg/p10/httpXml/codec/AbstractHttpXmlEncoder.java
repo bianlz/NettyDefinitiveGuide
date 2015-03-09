@@ -12,10 +12,10 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 
 public abstract class AbstractHttpXmlEncoder<T> extends MessageToMessageEncoder<T> {
-	private IBindingFactory factory;
-	private StringWriter writer;
-	private static final String CHARSET="UTF-8";
-	private final static Charset UTF_8 = Charset.forName(CHARSET);
+	IBindingFactory factory;
+	StringWriter writer;
+	static final String CHARSET="UTF-8";
+	static final Charset UTF_8 = Charset.forName(CHARSET);
 	public ByteBuf encode0(ChannelHandlerContext ctx,Object body)throws Exception{
 		factory = BindingDirectory.getFactory(body.getClass());
 		writer = new StringWriter();

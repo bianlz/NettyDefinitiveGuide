@@ -16,7 +16,7 @@ import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 
 public class HttpXmlServer {
-	public void bind(int port)throws Exception{
+	public void run(int port)throws Exception{
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		EventLoopGroup workGroup = new NioEventLoopGroup();
 		try{
@@ -29,16 +29,18 @@ public class HttpXmlServer {
 							// TODO Auto-generated method stub
 							arg0.pipeline().addLast("http-decoder",new HttpRequestDecoder());
 							arg0.pipeline().addLast("http-aggregator",new HttpObjectAggregator(65536));
-							arg0.pipeline().addLast("xml-decoder",new HttpXmlRequestDecoder(Order.class));
+							arg0.pipeline().addLast("xml-decoder",new HttpXmlRequestDecoder(Order.class,true));
 							arg0.pipeline().addLast("http-encoder", new HttpResponseEncoder());
 							arg0.pipeline().addLast("xml-encoder",new HttpXmlResponseEncoder());
 							arg0.pipeline().addLast("xmlServerHandler",new HttpXmlServerHandler());
 						}
 					});
 			ChannelFuture future = server.bind(port).sync();
-			future.channel().close();
+			System.out.println("server has been started !");
+			future.channel().closeFuture().sync();
 		}finally{
-			
+			bossGroup.shutdownGracefully();
+			workGroup.shutdownGracefully();
 		}
 	}
 	public static void main(String[] args) {
@@ -51,13 +53,13 @@ public class HttpXmlServer {
 				System.err.println("port must be number !");
 				System.exit(1);
 			}
-			try {
-				new HttpXmlServer().bind(port);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.exit(1);
-			}
+		}
+		try{
+			new HttpXmlServer().run(port);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 

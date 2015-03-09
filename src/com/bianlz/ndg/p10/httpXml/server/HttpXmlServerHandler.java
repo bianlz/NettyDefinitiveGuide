@@ -6,9 +6,9 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.CharsetUtil;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bianlz.ndg.p10.httpXml.codec.HttpXmlRequest;
+import com.bianlz.ndg.p10.httpXml.codec.HttpXmlResponse;
 import com.bianlz.ndg.p10.httpXml.pojo.Address;
 import com.bianlz.ndg.p10.httpXml.pojo.Order;
 
@@ -28,11 +29,11 @@ public class HttpXmlServerHandler extends SimpleChannelInboundHandler<HttpXmlReq
 	protected void messageReceived(final ChannelHandlerContext ctx,
 			HttpXmlRequest xmlRequest) throws Exception {
 		// TODO Auto-generated method stub
-		FullHttpRequest request = xmlRequest.getRequest();
+		HttpRequest request = xmlRequest.getRequest();
 		Order order = (Order)xmlRequest.getBody();
 		System.out.println("server has recieved message:"+order);
 		doBusiness(order);
-		ChannelFuture future = ctx.writeAndFlush(new HttpXmlRequest(null, order));
+		ChannelFuture future = ctx.writeAndFlush(new HttpXmlResponse(null, order));
 		if(!HttpHeaders.isKeepAlive(request)){
 			future.addListener(new GenericFutureListener<Future<? super Void>>() {
 				@Override

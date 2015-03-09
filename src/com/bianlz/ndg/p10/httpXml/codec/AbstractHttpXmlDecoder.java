@@ -6,6 +6,7 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.util.CharsetUtil;
 
 import java.io.StringReader;
+import java.nio.charset.Charset;
 
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
@@ -16,6 +17,8 @@ public abstract class AbstractHttpXmlDecoder<T> extends MessageToMessageDecoder<
 	private StringReader reader ;
 	private Class<?> classz;
 	private boolean isPrint;
+	private final static String CHARSET_NAME="UTF-8";
+	private final static Charset UTF_8=Charset.forName(CHARSET_NAME);
 	
 	public AbstractHttpXmlDecoder(Class<?> classz){
 		this(classz,false);
@@ -24,10 +27,10 @@ public abstract class AbstractHttpXmlDecoder<T> extends MessageToMessageDecoder<
 		this.classz = classz;
 		this.isPrint = isPrint;
 	}
-	protected Object decode0(ChannelHandlerContext ctx,ByteBuf buf)throws Exception{
-		this.factory = BindingDirectory.getFactory(classz);
-		String content = buf.toString(CharsetUtil.UTF_8);
-		if(this.isPrint){
+	protected Object decode0(ChannelHandlerContext ctx,ByteBuf body)throws Exception{
+		factory = BindingDirectory.getFactory(classz);
+		String content = body.toString(UTF_8);
+		if(isPrint){
 			System.out.println("body is "+content);
 		}
 		reader = new StringReader(content);

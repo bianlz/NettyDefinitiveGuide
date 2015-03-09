@@ -21,4 +21,10 @@ public class HttpXmlRequest {
 	public final void setBody(Object body) {
 		this.body = body;
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "httpXmlRequest [req="+this.request+",body="+this.body+"]";
+	}
+	
 }
