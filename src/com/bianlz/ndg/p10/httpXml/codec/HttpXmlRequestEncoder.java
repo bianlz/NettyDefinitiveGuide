@@ -11,7 +11,7 @@ import io.netty.handler.codec.http.HttpVersion;
 import java.net.InetAddress;
 import java.util.List;
 
-public class HttpXmlRequestEncoder extends AbstractHttpXmlRequestEncoder<HttpXmlRequest> {
+public class HttpXmlRequestEncoder extends AbstractHttpXmlEncoder<HttpXmlRequest> {
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, HttpXmlRequest msg,

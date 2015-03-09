@@ -1,7 +1,7 @@
 package com.bianlz.ndg.p10.httpXml.pojo;
 
 public class OrderFactory {
-	public static Order getOrder(){
+	public static Order create(){
 		Order order = new Order();
 		order.setOrderNumber((long)(Math.random()*10000+1));
 		order.setTotal((float)(Math.random()*100+1));

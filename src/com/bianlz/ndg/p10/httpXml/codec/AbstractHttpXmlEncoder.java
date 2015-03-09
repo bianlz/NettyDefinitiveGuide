@@ -2,8 +2,6 @@ package com.bianlz.ndg.p10.httpXml.codec;
 
 import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.List;
-
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
@@ -13,7 +11,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 
-public abstract class AbstractHttpXmlRequestEncoder<T> extends MessageToMessageEncoder<T> {
+public abstract class AbstractHttpXmlEncoder<T> extends MessageToMessageEncoder<T> {
 	private IBindingFactory factory;
 	private StringWriter writer;
 	private static final String CHARSET="UTF-8";
@@ -30,12 +28,7 @@ public abstract class AbstractHttpXmlRequestEncoder<T> extends MessageToMessageE
 		ByteBuf buf = Unpooled.copiedBuffer(xmlStr,UTF_8);
 		return buf;
 	}
-	@Override
-	protected void encode(ChannelHandlerContext arg0, T arg1, List<Object> arg2)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {

@@ -36,7 +36,7 @@ public class TestOrder {
 	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
 		TestOrder test = new TestOrder();
-		Order order = OrderFactory.getOrder();
+		Order order = OrderFactory.create();
 		String body = test.encode2Xml(order);
 		Order order2 = test.decode2Order(body);
 		System.out.println(order2.getOrderNumber());
