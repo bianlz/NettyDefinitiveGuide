@@ -3,7 +3,6 @@ package com.bianlz.ndg.p10.httpXml.codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import io.netty.util.CharsetUtil;
 
 import java.io.StringReader;
 import java.nio.charset.Charset;
